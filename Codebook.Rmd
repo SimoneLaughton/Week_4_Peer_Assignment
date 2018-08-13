@@ -1,0 +1,203 @@
+---
+title: "Codebook"
+author: "Simone Laughton"
+date: '2018-08-12'
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Codebook Information - Week 4 Assignment 
+
+This is an R Markdown document that includes the codebook information for the file tidydata.txt, which is the resulting file after applying run_analysis.R to the UC Irvine Machine Learning Repository (UCI) Human Activity Recognition (HAR) dataset.  The creation of this Codebook is one of the requirements for the Getting and Cleaning Data Week 4 Peer Review assignment.
+
+As noted in the README.txt file for the data, "The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
+
+The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain. See 'features_info.txt' for more details" (Anguita, Ghio, Oneto, Parra & Reyes-Ortiz (2013).
+
+References:
+Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. A Public Domain Dataset for Human Activity Recognition Using Smartphones. 21th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning, ESANN 2013. Bruges, Belgium 24-26 April 2013. Retrieved from http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones.
+
+Wickham, H. (2014). Tidy data.  Journal of Statistical Software, 59(10).  Retrieved from https://www.jstatsoft.org/article/view/v059i10.
+
+## Codebook for the resulting Tidy Data File (tidydata.txt) includes the following:
+
+### Rows
+- 1 header row
+- 180 rows of data including subject, activity, and 86 average measurements for means and standard deviations related to each subject and activity
+
+### Columns
+
+- 88 columns including:
+
+#### Column #1 - subject
+
+- Total number of subjects (Note: subject = participant or person) = 30
+- The subjects are numbered from 1 to 30. 
+- Each number represents a unique subject.
+- The subjects were between 19 - 48 years of age.
+- Each subject has 6 rows of measurements.
+
+#### Column #2 - activity 
+
+- Total number of activities for each subject = 6
+
+Note:  Measurements were taken for each subject for each of the 6 activities.  As noted in the activities_labels.txt file, the labels for the activities are: 
+
+- 1 WALKING
+- 2 WALKING_UPSTAIRS
+- 3 WALKING_DOWNSTAIRS
+- 4 SITTING
+- 5 STANDING
+- 6 LAYING
+
+#### Columns #3 - 88 - average measurements for each subject and activity
+
+As noted in the file features_info.txt, "The features selected for this database come from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ. These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise."
+
+The following is a legend of the meaning for the letters in the variable names.
+
+- t = time
+- f = frequency domain signals
+- acc = accelerometer
+- gyro = gyroscope
+- body = body
+- jerk = jerk signals
+- mag = magnitude
+- freq = frequency
+- angle = angle between two vectors
+- mean = mean
+- std = standard deviation
+
+Note:  Measurements were taken for X, Y, and Z axes
+
+#### Columns #3 - 14
+As noted in the file features_info.txt, "the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz."
+
+Variables in the tidydata.txt file for these columns include:
+
+- Column 3 - tbodyaccmeanx
+- Column 4 - tbodyaccmeany
+- Column 5 - tbodyaccmeanz
+- Column 6 - tbodyaccstdx
+- Column 7 - tbodyaccstdy
+- Column 8 - tbodyaccstdz
+- Column 9 - tgravityaccmeanx
+- Column 10 - tgravityaccmeany
+- Column 11 - tgravityaccmeanz
+- Column 12 - tgravityaccstdx
+- Column 13 - tgravityaccstdy
+- Column 14 - tgravityaccstdz
+
+#### Columns 15 - 32
+
+As noted in the file features_info.txt, "Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ)."
+
+Variables in the tidydata.txt file for these columns include:
+
+- Column 15 - tbodyaccjerkmeanx
+- Column 16 - tbodyaccjerkmeany
+- Column 17 - tbodyaccjerkmeanz
+- Column 18 - tbodyaccjerkstdx
+- Column 19 - tbodyaccjerkstdy
+- Column 20 - tbodyaccjerkstdz
+- Column 21 - tbodygyromeanx
+- Column 22 - tbodygyromeany
+- Column 23 - tbodygyromeanz
+- Column 24 - tbodygyrostdx
+- Column 25 - tbodygyrostdy
+- Column 26 - tbodygyrostdz
+- Column 27 - tbodygyrojerkmeanx
+- Column 28 - tbodygyrojerkmeany
+- Column 29 - tbodygyrojerkmeanz
+- Column 30 - tbodygyrojerkstdx
+- Column 31 - tbodygyrojerkstdy
+- Column 32 - tbodygyrojerkstdz
+
+#### Columns 33 - 42 
+
+As noted in the file features_info.txt, "the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag)."
+
+Variables in the tidydata.txt file for these columns include:
+
+- Column 33 - tbodyaccmagmean
+- Column 34 - tbodyaccmagstd
+- Column 35 - tgravityaccmagmean
+- Column 36 - tgravityaccmagstd
+- Column 37 - tbodyaccjerkmagmean
+- Column 38 - tbodyaccjerkmagstd
+- Column 39 - tbodygyromagmean
+- Column 40 - tbodygyromagstd
+- Column 41 - tbodygyrojerkmagmean
+- Column 42 - tbodygyrojerkmagstd
+
+#### Columns 43 - 81
+
+As noted in the file features_info.txt, "a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals)."
+
+Variables in the tidydata.txt file for these columns include:
+
+- Column 43 - fbodyaccmeanx
+- Column 44 - fbodyaccmeany
+- Column 45 - fbodyaccmeanz
+- Column 46 - fbodyaccstdx
+- Column 47 - fbodyaccstdy
+- Column 48 - fbodyaccstdz
+- Column 49 - fbodyaccmeanfreqx
+- Column 50 - fbodyaccmeanfreqy
+- Column 51 - fbodyaccmeanfreqz
+- Column 52 - fbodyaccjerkmeanx
+- Column 53 - fbodyaccjerkmeany
+- Column 54 - fbodyaccjerkmeanz
+- Column 55 - fbodyaccjerkstdx
+- Column 56 - fbodyaccjerkstdy
+- Column 57 - fbodyaccjerkstdz
+- Column 58 - fbodyaccjerkmeanfreqx
+- Column 59 - fbodyaccjerkmeanfreqy
+- Column 60 - fbodyaccjerkmeanfreqz
+- Column 61 - fbodygyromeanx
+- Column 62 - fbodygyromeany
+- Column 63 - fbodygyromeanz
+- Column 64 - fbodygyrostdx
+- Column 65 - fbodygyrostdy
+- Column 66 - fbodygyrostdz
+- Column 67 - fbodygyromeanfreqx
+- Column 68 - fbodygyromeanfreqy
+- Column 69 - fbodygyromeanfreqz
+
+- Column 70 - fbodyaccmagmean
+- Column 71 - fbodyaccmagstd
+- Column 72 - fbodyaccmagmeanfreq
+- Column 73 - fbodybodyaccjerkmagmean
+- Column 74 - fbodybodyaccjerkmagstd
+- Column 75 - fbodybodyaccjerkmagmeanfreq
+- Column 76 - fbodybodygyromagmean
+- Column 77 - fbodybodygyromagstd
+- Column 78 - fbodybodygyromagmeanfreq
+- Column 79 - fbodybodygyrojerkmagmean
+- Column 80 - fbodybodygyrojerkmagstd
+- Column 81 - fbodybodygyrojerkmagmeanfreq
+
+#### Columns 82 - 88
+
+As noted in the file features_info.txt, "Additional vectors obtained by averaging the signals in a signal window sample. These are used on the angle() variable:
+
+- gravityMean
+- tBodyAccMean
+- tBodyAccJerkMean
+- tBodyGyroMean
+- tBodyGyroJerkMean" 
+
+Variables in the tidydata.txt file for these columns include:
+
+- Column 82 - angletbodyaccmean,gravity
+- Column 83 - angletbodyaccjerkmean,gravitymean
+- Column 84 - angletbodygyromean,gravitymean
+- Column 85 - angletbodygyrojerkmean,gravitymean
+- Column 86 - anglex,gravitymean
+- Column 87 - angley,gravitymean
+- Column 88 - anglez,gravitymean
+

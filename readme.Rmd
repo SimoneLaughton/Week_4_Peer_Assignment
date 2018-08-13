@@ -1,0 +1,124 @@
+---
+title: "readme"
+author: "Simone Laughton"
+date: '2018-08-12'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## readme file information for tidydata.txt 
+
+This is an R Markdown document that includes the readme information for the file tidydata.txt, which is the resulting file after applying run_analysis.R to the UC Irvine Machine Learning Repository (UCI) Human Activity Recognition (HAR) dataset.  The creation of this readme file is one of the requirements for the Getting and Cleaning Data Week 4 Peer Review assignment.
+
+As noted in the README.txt file for the data, "The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
+
+The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain. See 'features_info.txt' for more details" (Anguita, Ghio, Oneto, Parra & Reyes-Ortiz (2013).
+
+### Steps I used for this assignment
+
+The following steps were used to go from the data file that was downloaded to the file tidydata.txt:
+
+- The reshape2 library was loaded.
+- The dataset was downloaded and unzipped.
+- The structure of the data files and the variable names were reviewed.  
+- The activity labels and the feature variables were loaded
+- The mean and standard deviation measurements were extracted for each subject and activity
+- The data column names were renamed tidied (i.e., changed to lowercase and characters such as double brackets, dash and underscore were removed) (Wickham, 2014)
+- The datasets were read and the subjects and activities from training and test datasets were brought together and the updated labels were applied
+- The subjects and activities were noted as factors
+- The activities labels were used instead of the numbers
+- Melt was used on the data so that each row is a unque id-variable combination, and and cast was used for the observational data averages
+- A tidy table of the resulting data set was written
+
+### run_analysis.R fulfills the following requirements:
+#### 1. Merge the training and the test sets to create one data set.
+#### 2. Extract only the mean and standard deviation measurements.
+#### 3. Use descriptive activity names to name the activities in the data set.
+#### 4. Appropriately label the data set with descriptive variable names.
+#### 5. From #4, create a second, independent tidy data set with the average of each variable for each activity and each subject.
+
+#### Note this has not been done in order listed above.
+#### Note I have added a dot (in the html file) and a "- >" (in the Rmd file) in front of the lines of code that were used in R.  To run this file, enter the text beside the dot character (in the htlm file) or the "- >" characters (in the Rmd file) in front of each item below.  I did not use italics in my original file, but some of the items seem to have italics in the html.
+
+#### Load reshape2 library
+- > library(reshape2)
+- > filename <- "getdata_dataset.zip"
+
+#### Download the dataset and unzip it.
+- > if (!file.exists(filename)){
+        fileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip "
+        download.file(fileURL, filename, method="curl")
+} 
+- > if (!file.exists("UCI HAR Dataset")) { 
+        +     unzip(filename) 
+}
+
+#### Load the activity labels and the feature variables
+- > activitylabels <- read.table("UCI HAR Dataset/activity_labels.txt")
+- > activitylabels[,2] <- as.character(activitylabels[,2])
+- > features <- read.table("UCI HAR Dataset/features.txt")
+- > features[,2] <- as.character(features[,2])
+
+#### Grab only data that indicates by column name that it has mean or standard deviation values
+#### The item below completes requirement #2 by separating out features for mean and standard deviation
+- > featuresmeanstd <- grep("*.mean.*|*.std.*|^angle.*", features[,2])
+
+#### Rename the data to lowercase and remove characters such as double brackets, dash and underscore
+#### Together with the Codebook, the items below fulfill requirement #4.
+- > rename <- features[featuresmeanstd,2]
+- > rename = gsub("-mean", "mean", rename)
+- > rename = gsub("-std", "std", rename)
+- > rename = gsub("[-()]", "", rename)
+- > rename = gsub("A", "a", rename)
+- > rename = gsub("B", "b", rename)
+- > rename = gsub("F", "f", rename)
+- > rename = gsub("G", "g", rename)
+- > rename = gsub("J", "j", rename)
+- > rename = gsub("M", "m", rename)
+- > rename = gsub("X", "x", rename)
+- > rename = gsub("Y", "y", rename)
+- > rename = gsub("Z", "z", rename)
+- > rename = gsub("[_]", "", rename)
+
+#### Read the datasets and bring together the subjects and activities from training and test datasets
+#### Below are the first steps towards fulfilling requirement #1.
+- > train <- read.table("UCI HAR Dataset/train/X_train.txt")[featuresmeanstd]
+- > trainactivities <- read.table("UCI HAR Dataset/train/y_train.txt")
+- > trainsubjects <- read.table("UCI HAR Dataset/train/subject_train.txt")
+- > train <- cbind(trainsubjects, trainactivities, train)
+
+- > test <- read.table("UCI HAR Dataset/test/X_test.txt")[featuresmeanstd]
+- > testactivities <- read.table("UCI HAR Dataset/test/y_test.txt")
+- > testsubjects <- read.table("UCI HAR Dataset/test/subject_test.txt")
+- > test <- cbind(testsubjects, testactivities, test)
+
+#### Merge the datasets together
+#### The item below completes requirement #1.
+- > ucidata <- rbind(train, test)
+
+#### Below updates are made to the labels as noted in requirement #4.
+- > colnames(ucidata) <- c("subject", "activity", rename)
+
+#### Change subjects and activities into factors
+- > ucidata$subject <- as.factor(ucidata$subject)
+
+#### Below fulfills requirement #3 by using the activity labels instead of the numbers.
+- > ucidata$activity <- factor(ucidata$activity, levels = activitylabels[,1], labels = activitylabels[,2])
+
+#### Melt the data so that each row is a unque id-variable combination, and cast was used for the observational data averages 
+#### Below is the first part of completing requirement #5.
+- > ucidatamelt <- melt(ucidata, id = c("subject", "activity"))
+- > ucidatamean <- dcast(ucidatamelt, subject + activity ~ variable, mean)
+
+#### Write a tidy table of the resulting data set
+#### The item below completes requirement #5.
+- > write.table(ucidatamean, "./tidydata.txt", row.names = FALSE, quote = FALSE, sep='\t')
+
+References:
+
+Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. A Public Domain Dataset for Human Activity Recognition Using Smartphones. 21th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning, ESANN 2013. Bruges, Belgium 24-26 April 2013. Retrieved from http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones.
+
+Wickham, H. (2014). Tidy data.  Journal of Statistical Software, 59(10).  Retrieved from https://www.jstatsoft.org/article/view/v059i10.
